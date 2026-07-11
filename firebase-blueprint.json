@@ -1,0 +1,17 @@
+{
+  "collections": {
+    "portfolio": {
+      "documents": {
+        "main": {
+          "fields": {
+            "general": { "type": "map" },
+            "work": { "type": "array" },
+            "education": { "type": "array" },
+            "gallery": { "type": "array" },
+            "messages": { "type": "array" }
+          }
+        }
+      }
+    }
+  }
+}

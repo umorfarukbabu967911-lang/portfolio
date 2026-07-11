@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Syne:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&family=Reenie+Beanie&display=swap');
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-display: "Syne", sans-serif;
+  --font-serif: "Cormorant Garamond", serif;
+  --font-handwritten: "Reenie Beanie", cursive;
+  --font-mono: "Fira Code", ui-monospace, monospace;
+}
+
+/* Base custom styles */
+body {
+  background-color: #050409; /* pure luxury deep dark obsidian */
+  color: #f3f4f6;
+  font-family: var(--font-sans);
+}
+
+/* Custom 3D perspective utility */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* Notebook/Paper texture background effects */
+.bg-notebook-paper {
+  background-color: #f9f6f0; /* elegant antique cream/warm paper color */
+  background-image: 
+    linear-gradient(#f0ebe0 1px, transparent 1px),
+    linear-gradient(90deg, #f0ebe0 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.bg-notebook-lined {
+  background-color: #faf7f2;
+  background-image: linear-gradient(#e9e4d5 1px, transparent 1px);
+  background-size: 100% 24px;
+}
+
+/* Polaroids scattering styling */
+.scrapbook-tape {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 60px;
+  height: 20px;
+  background-color: rgba(235, 230, 215, 0.6);
+  backdrop-filter: blur(1px);
+  border-left: 2px dashed rgba(0, 0, 0, 0.05);
+  border-right: 2px dashed rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  z-index: 10;
+}
+
+/* Custom Rotating Border and Glow keyframes */
+@keyframes spin-border {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-border {
+  animation: spin-border 4s linear infinite;
+}
+
+.animate-spin-border-slow {
+  animation: spin-border 8s linear infinite;
+}
+
+/* Floating animation */
+@keyframes float-element {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+.animate-float {
+  animation: float-element 5s ease-in-out infinite;
+}
+
+/* Glow animation */
+@keyframes breath-glow {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.05);
+  }
+}
+
+.animate-breath-glow {
+  animation: breath-glow 6s ease-in-out infinite;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050409;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1c1a24;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2b273b;
+}

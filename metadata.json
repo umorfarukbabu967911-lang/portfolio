@@ -1,0 +1,6 @@
+{
+  "name": "UF Premium Interactive Portfolio",
+  "description": "An elite, interactive professional portfolio for UF with a hidden admin panel, immersive banner hero section, and a scattered scrapbook-style photo gallery.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
