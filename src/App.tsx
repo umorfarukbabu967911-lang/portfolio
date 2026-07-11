@@ -23,29 +23,63 @@ export default function App() {
   useEffect(() => {
     async function loadData() {
       try {
-        const cloudData = await getPortfolioData();
+        const cloudData = await getPortfolioData() as PortfolioData | null;
+        
+        // Get local data first
+        const savedLocalStr = localStorage.getItem("portfolio_data");
+        let localData: PortfolioData | null = null;
+        if (savedLocalStr) {
+          try {
+            const parsed = JSON.parse(savedLocalStr);
+            if (parsed.general && parsed.work && parsed.education && parsed.gallery) {
+              localData = parsed;
+            }
+          } catch (err) {
+            console.error("Local data parse error:", err);
+          }
+        }
+
         if (cloudData && cloudData.general && cloudData.work && cloudData.education && cloudData.gallery) {
-          setData(cloudData);
-          localStorage.setItem("portfolio_data", JSON.stringify(cloudData));
+          // Both local and cloud data exist, let's sync based on updatedAt timestamp
+          if (localData) {
+            const localTime = localData.updatedAt || 0;
+            const cloudTime = cloudData.updatedAt || 0;
+            
+            if (localTime > cloudTime) {
+              console.log("Local data is newer. Prioritizing local state and syncing to Firestore.");
+              setData(localData);
+              // Background sync local data to Firestore
+              try {
+                const compressed = await compressPortfolioDataImages(localData);
+                await savePortfolioData(compressed);
+              } catch (err) {
+                console.error("Background sync to Firestore failed:", err);
+              }
+            } else {
+              console.log("Cloud data is newer. Updating local state.");
+              setData(cloudData);
+              localStorage.setItem("portfolio_data", JSON.stringify(cloudData));
+            }
+          } else {
+            // No local data, use cloud data
+            setData(cloudData);
+            localStorage.setItem("portfolio_data", JSON.stringify(cloudData));
+          }
         } else {
           // If Firestore is empty, initialize it with local storage or default data
-          const savedLocal = localStorage.getItem("portfolio_data");
-          let initialData = defaultPortfolioData;
-          if (savedLocal) {
-            try {
-              const parsed = JSON.parse(savedLocal);
-              if (parsed.general && parsed.work && parsed.education && parsed.gallery) {
-                initialData = parsed;
-              }
-            } catch (err) {
-              console.error("Local data parse error:", err);
-            }
+          let initialData = localData || defaultPortfolioData;
+          if (!initialData.updatedAt) {
+            initialData.updatedAt = Date.now();
           }
           // Automatically compress any large legacy base64 images from localStorage
           const compressedInitial = await compressPortfolioDataImages(initialData);
           setData(compressedInitial);
           localStorage.setItem("portfolio_data", JSON.stringify(compressedInitial));
-          await savePortfolioData(compressedInitial);
+          try {
+            await savePortfolioData(compressedInitial);
+          } catch (syncErr) {
+            console.error("Failed to sync initial data to Firestore:", syncErr);
+          }
         }
       } catch (error) {
         console.error("Failed to load from Firestore, falling back to local storage:", error);
@@ -70,13 +104,16 @@ export default function App() {
 
   // Update data and save to Firestore + LocalStorage
   const handleUpdateData = async (newData: PortfolioData) => {
+    // Append updatedAt timestamp
+    const dataWithTimestamp = { ...newData, updatedAt: Date.now() };
+
     // Update local state instantly for Snappy UX
-    setData(newData);
-    localStorage.setItem("portfolio_data", JSON.stringify(newData));
+    setData(dataWithTimestamp);
+    localStorage.setItem("portfolio_data", JSON.stringify(dataWithTimestamp));
 
     try {
       // Ensure all images are compressed before saving to Firestore to fit the 1MB limit
-      const compressedData = await compressPortfolioDataImages(newData);
+      const compressedData = await compressPortfolioDataImages(dataWithTimestamp);
       setData(compressedData);
       localStorage.setItem("portfolio_data", JSON.stringify(compressedData));
       await savePortfolioData(compressedData);

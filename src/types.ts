@@ -55,4 +55,5 @@ export interface PortfolioData {
   education: Education[];
   gallery: GalleryItem[];
   messages: ContactMessage[];
+  updatedAt?: number;
 }

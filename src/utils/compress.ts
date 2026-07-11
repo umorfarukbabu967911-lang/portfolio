@@ -6,17 +6,17 @@ import { PortfolioData } from "../types";
  */
 export function compressBase64Image(
   base64Str: string,
-  maxWidth = 600,
-  maxHeight = 600,
-  quality = 0.5
+  maxWidth = 450,
+  maxHeight = 450,
+  quality = 0.4
 ): Promise<string> {
   // If not a base64 image or already very small, return as-is
   if (!base64Str || !base64Str.startsWith("data:image/")) {
     return Promise.resolve(base64Str);
   }
 
-  // If the base64 string is already under ~25KB, skip compression to avoid CPU overhead
-  if (base64Str.length < 35000) {
+  // If the base64 string is already under ~11KB, skip compression to avoid CPU overhead
+  if (base64Str.length < 15000) {
     return Promise.resolve(base64Str);
   }
 
@@ -100,9 +100,9 @@ export async function compressPortfolioDataImages(data: PortfolioData): Promise<
  */
 export function compressImageFile(
   file: File,
-  maxWidth = 600,
-  maxHeight = 600,
-  quality = 0.5
+  maxWidth = 450,
+  maxHeight = 450,
+  quality = 0.4
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
