@@ -2,14 +2,14 @@ import { PortfolioData } from "./types";
 
 export const defaultPortfolioData: PortfolioData = {
   general: {
-    name: "UF Studio",
+    name: "UMOR FARUK",
     title: "Senior Interactive Web Engineer & Creative Architect",
     subtitle: "Pioneering the next generation of premium spatial web aesthetics",
     bio: "We craft immersive digital spaces, elegant user interfaces, and custom visual design systems for forward-thinking brands worldwide. Specializing in high-fidelity React performance and custom creative interaction layers.",
-    logoText: "UF.STUDIO",
+    logoText: "UMOR FARUK",
     logoImage: "",
     profileImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200",
-    email: "uf.studio@creative.com",
+    email: "umorfarukbabu967911@gmail.com",
     phone: "+1 (555) 019-2831",
     address: "Metropolitan Block, NY, United States",
     github: "https://github.com",
