@@ -19,51 +19,42 @@ export default function HeroSection({ general, setActiveTab }: HeroSectionProps)
       {/* Grid pattern backdrop */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none" />
 
-      {/* Profile/Widescreen Split Top Section: Large portrait profile photo next to the display name */}
-      <div className="relative w-full rounded-3xl overflow-hidden bg-neutral-900/20 border border-neutral-850 mb-12 shadow-2xl">
-        <div className="absolute inset-0 bg-gradient-to-br from-neutral-950 via-[#0a0812]/95 to-[#050409]/90 z-0" />
+      {/* Profile/Widescreen Banner Top Section: restored and enlarged with text overlay on top of black-gradient background fade */}
+      <div className="relative w-full rounded-3xl overflow-hidden bg-neutral-950 border border-neutral-850 mb-12 shadow-2xl min-h-[480px] sm:min-h-[520px] lg:min-h-[580px] flex items-center">
+        {/* Black-black gradient shadow/fade on one side (left on desktop, bottom-to-top on mobile) for high contrast text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/85 to-transparent lg:bg-gradient-to-r lg:from-neutral-950 lg:via-neutral-950/80 lg:to-transparent z-10 pointer-events-none" />
         
-        {/* Content overlaid inside/next to the widescreen banner image */}
-        <div className="relative z-10 px-6 py-10 md:p-14 lg:p-16 flex flex-col lg:flex-row items-center justify-between gap-10">
-          
-          <div className="space-y-6 flex-grow text-left max-w-3xl">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-mono uppercase tracking-widest font-semibold">
-              <Sparkles className="w-3.5 h-3.5 animate-pulse text-emerald-400" />
-              <span>Interactive Portfolio Core</span>
-            </div>
+        {/* Dynamic Cover Image - Spans full width and height as background */}
+        <div className="absolute inset-0 w-full h-full z-0">
+          <img
+            src={general.profileImage || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200"}
+            alt={general.name}
+            referrerPolicy="no-referrer"
+            className="w-full h-full object-cover object-top opacity-55 sm:opacity-75 transition-all duration-700 hover:scale-[1.02]"
+          />
+        </div>
 
-            <div className="space-y-3">
-              {/* Stylish Display Typography for the name "UF" or user defined */}
-              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-extrabold tracking-tight text-white leading-none">
-                {general.name || "UF"}
-              </h1>
+        {/* Content overlaid inside the widescreen banner image */}
+        <div className="relative z-20 px-6 py-12 md:p-14 lg:p-20 w-full flex flex-col justify-end lg:justify-center items-start text-left gap-6">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-mono uppercase tracking-widest font-semibold">
+            <Sparkles className="w-3.5 h-3.5 animate-pulse text-emerald-400" />
+            <span>Interactive Portfolio Core</span>
+          </div>
 
-              <p className="text-xl md:text-2xl font-serif text-emerald-400 font-medium italic">
-                {general.title || "Senior Interactive Engineer"}
-              </p>
-            </div>
+          <div className="space-y-4 max-w-3xl">
+            {/* Stylish Display Typography for the name "UF" or user defined */}
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-extrabold tracking-tight text-white leading-none">
+              {general.name || "UF"}
+            </h1>
+
+            <p className="text-xl md:text-2xl font-serif text-emerald-400 font-medium italic">
+              {general.title || "Senior Interactive Engineer"}
+            </p>
             
-            <p className="text-sm md:text-base text-neutral-300 max-w-2xl leading-relaxed">
+            <p className="text-sm md:text-base text-neutral-300 max-w-2xl leading-relaxed pt-2">
               {general.subtitle || "Crafting fluid multi-dimensional environments with high-fidelity performance."}
             </p>
           </div>
-
-          {/* Right Profile Photo - Large, Non-circular, Premium Framing, extremely high quality, doesn't get squished */}
-          <div className="w-full sm:w-80 md:w-96 lg:w-[420px] shrink-0 aspect-[4/5] sm:aspect-[3/4] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950 shadow-2xl relative group z-10">
-            {/* Soft backdrop glow to make the photo pop */}
-            <div className="absolute -inset-1.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-3xl blur-xl opacity-20 group-hover:opacity-35 transition duration-500" />
-            
-            <div className="relative w-full h-full rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
-              <img
-                src={general.profileImage || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200"}
-                alt={general.name}
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent opacity-60 pointer-events-none" />
-            </div>
-          </div>
-
         </div>
       </div>
 
