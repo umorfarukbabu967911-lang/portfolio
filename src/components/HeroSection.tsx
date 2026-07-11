@@ -36,10 +36,6 @@ export default function HeroSection({ general, setActiveTab }: HeroSectionProps)
 
         {/* Content overlaid inside the widescreen banner image */}
         <div className="relative z-20 px-6 py-12 md:p-14 lg:p-20 w-full flex flex-col justify-end lg:justify-center items-start text-left gap-6">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-mono uppercase tracking-widest font-semibold">
-            <Sparkles className="w-3.5 h-3.5 animate-pulse text-emerald-400" />
-            <span>Interactive Portfolio Core</span>
-          </div>
 
           <div className="space-y-4 max-w-3xl">
             {/* Stylish Display Typography for the name "UF" or user defined */}
