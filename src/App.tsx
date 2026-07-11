@@ -19,6 +19,42 @@ export default function App() {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  // Synchronize state with URL hash (Back/Forward browser navigation support)
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace("#", "");
+      if (hash === "admin") {
+        setIsAdmin(true);
+      } else if (["hero", "work", "education", "gallery", "contact"].includes(hash)) {
+        setActiveTab(hash);
+        setIsAdmin(false);
+      } else if (!hash) {
+        setActiveTab("hero");
+        setIsAdmin(false);
+      }
+    };
+
+    // Run on mount to set initial tab from current hash
+    handleHashChange();
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
+  // Update URL hash whenever activeTab or isAdmin changes in React state
+  useEffect(() => {
+    if (isLoading) return;
+
+    const currentHash = window.location.hash.replace("#", "");
+    const expectedHash = isAdmin ? "admin" : activeTab;
+    if (currentHash !== expectedHash) {
+      if (expectedHash === "hero" && !currentHash) {
+        return;
+      }
+      window.location.hash = expectedHash;
+    }
+  }, [activeTab, isAdmin, isLoading]);
+
   // Load from Firebase on mount (fallback to localStorage if offline/error)
   useEffect(() => {
     async function loadData() {
