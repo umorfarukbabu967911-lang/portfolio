@@ -113,19 +113,41 @@ export default function HeroSection({ general, setActiveTab }: HeroSectionProps)
               <div className="space-y-4 text-left">
                 <div className="flex items-center gap-2">
                   <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-[10px] font-mono uppercase text-emerald-400 tracking-widest font-bold">Active System Console</span>
+                  <span className="text-[10px] font-mono uppercase text-emerald-400 tracking-widest font-bold">Quick Navigation Menu</span>
                 </div>
                 
-                <div className="space-y-3 font-mono text-xs text-neutral-400 bg-neutral-950 p-4.5 rounded-xl border border-neutral-900/80">
-                  <p className="text-neutral-500">{"$ cat capabilities.json"}</p>
-                  <div className="space-y-1.5 pl-3 border-l border-neutral-900">
-                    <p className="text-emerald-400">✓ React & TypeScript</p>
-                    <p className="text-emerald-400">✓ Custom Interaction Layers</p>
-                    <p className="text-emerald-400">✓ LocalStorage Synchronization</p>
-                    <p className="text-emerald-400">✓ Scattered Scrapbook Physics</p>
-                  </div>
-                  <p className="text-neutral-500">{"$ uptime"}</p>
-                  <p className="text-neutral-300 pl-3">SYSTEM ONLINE - SECURE ENVIRONMENT</p>
+                <div className="flex flex-col gap-2">
+                  {[
+                    { id: "hero", label: "Home", desc: "Main landing & biography", icon: Sparkles },
+                    { id: "work", label: "Work", desc: "Experience & showcase", icon: ArrowRight },
+                    { id: "education", label: "Education", desc: "Academics & core skills", icon: ArrowRight },
+                    { id: "gallery", label: "Gallery", desc: "Interactive memory book", icon: ArrowRight },
+                    { id: "contact", label: "Contact", desc: "Get in touch directly", icon: Mail },
+                  ].map((nav) => {
+                    const isCurrent = nav.id === "hero";
+                    return (
+                      <button
+                        key={nav.id}
+                        onClick={() => setActiveTab(nav.id)}
+                        className={`group/btn w-full text-left p-2.5 rounded-xl border transition-all duration-300 flex items-center justify-between cursor-pointer ${
+                          isCurrent
+                            ? "bg-emerald-500/10 border-emerald-500/25 text-emerald-400"
+                            : "bg-neutral-950 border-neutral-900/80 hover:border-emerald-500/30 text-neutral-400 hover:text-neutral-100 hover:bg-neutral-900/40"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`p-1.5 rounded-lg ${isCurrent ? "bg-emerald-500/20 text-emerald-400" : "bg-neutral-900 text-neutral-500 group-hover/btn:text-emerald-400 group-hover/btn:bg-emerald-500/10"} transition-all duration-300`}>
+                            <nav.icon className="w-3.5 h-3.5" />
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold uppercase tracking-wider font-sans">{nav.label}</p>
+                            <p className="text-[9px] text-neutral-500 font-mono mt-0.5">{nav.desc}</p>
+                          </div>
+                        </div>
+                        <ArrowRight className={`w-3.5 h-3.5 transition-transform duration-300 ${isCurrent ? "text-emerald-400 translate-x-0" : "text-neutral-600 group-hover/btn:text-emerald-400 group-hover/btn:translate-x-1"}`} />
+                      </button>
+                    );
+                  })}
                 </div>
 
                 {/* Social Connect Icons */}
