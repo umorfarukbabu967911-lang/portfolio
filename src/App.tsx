@@ -173,7 +173,7 @@ export default function App() {
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.35, ease: "easeInOut" }}
             >
-              <div className="max-w-7xl mx-auto px-4 pt-6">
+              <div className="max-w-7xl lg:max-w-screen-2xl mx-auto px-4 pt-6">
                 <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-semibold shadow-lg">
                   <div className="flex items-center gap-2">
                     <ShieldCheck className="w-5 h-5 animate-pulse text-emerald-400" />
@@ -205,7 +205,7 @@ export default function App() {
 
       {/* Beautiful Crafted Footer */}
       <footer className="relative z-10 border-t border-neutral-900/50 bg-[#050409]/90 backdrop-blur-md py-8 px-4 mt-12">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs sm:text-sm">
+        <div className="max-w-7xl lg:max-w-screen-2xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs sm:text-sm">
           <div className="flex items-center gap-2 select-none">
             <Sparkles className="w-4 h-4 text-emerald-400 animate-pulse" />
             <span className="font-display font-black tracking-widest text-emerald-400 uppercase">{data.general.logoText || "UF.STUDIO"}</span>

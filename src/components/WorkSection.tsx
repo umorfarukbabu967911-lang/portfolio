@@ -10,7 +10,7 @@ interface WorkSectionProps {
 
 export default function WorkSection({ work }: WorkSectionProps) {
   return (
-    <section className="py-12 px-4 md:px-8 max-w-7xl mx-auto">
+    <section className="py-12 px-4 md:px-8 max-w-7xl lg:max-w-screen-2xl mx-auto">
       <div className="flex flex-col items-center text-center space-y-4 mb-12">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-mono uppercase tracking-widest">
           <Briefcase className="w-3.5 h-3.5" />

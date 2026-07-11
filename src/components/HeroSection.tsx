@@ -11,7 +11,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ general, setActiveTab }: HeroSectionProps) {
   return (
-    <section className="relative py-8 px-4 md:px-8 max-w-7xl mx-auto overflow-hidden">
+    <section className="relative py-8 px-4 md:px-8 max-w-7xl lg:max-w-screen-2xl mx-auto overflow-hidden">
       {/* Background ambient glowing spheres for depth */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-emerald-500/5 blur-3xl pointer-events-none animate-breath-glow" />
       <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-96 h-96 rounded-full bg-teal-500/5 blur-3xl pointer-events-none animate-breath-glow" style={{ animationDelay: "2.5s" }} />
@@ -19,39 +19,50 @@ export default function HeroSection({ general, setActiveTab }: HeroSectionProps)
       {/* Grid pattern backdrop */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none" />
 
-      {/* Profile/Widescreen Banner Top Section: as requested, profile photo at the top, wide, non-circular, spanning/framing, with name positioned next to it */}
-      <div className="relative w-full rounded-3xl overflow-hidden bg-neutral-900 border border-neutral-800/80 mb-12 shadow-2xl">
-        <div className="absolute inset-0 bg-gradient-to-r from-neutral-950 via-neutral-950/80 to-transparent z-10" />
+      {/* Profile/Widescreen Split Top Section: Large portrait profile photo next to the display name */}
+      <div className="relative w-full rounded-3xl overflow-hidden bg-neutral-900/20 border border-neutral-850 mb-12 shadow-2xl">
+        <div className="absolute inset-0 bg-gradient-to-br from-neutral-950 via-[#0a0812]/95 to-[#050409]/90 z-0" />
         
-        {/* Dynamic Cover Image - Top portion of the portfolio wrapping the UI */}
-        <div className="absolute inset-0 w-full h-full">
-          <img
-            src={general.profileImage || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200"}
-            alt="Profile Backdrop"
-            referrerPolicy="no-referrer"
-            className="w-full h-full object-cover object-top opacity-50 sm:opacity-70 scale-105"
-          />
-        </div>
-
         {/* Content overlaid inside/next to the widescreen banner image */}
-        <div className="relative z-20 px-6 py-12 md:p-16 flex flex-col md:flex-row md:items-center justify-between gap-8">
+        <div className="relative z-10 px-6 py-10 md:p-14 lg:p-16 flex flex-col lg:flex-row items-center justify-between gap-10">
           
-          <div className="space-y-4 max-w-2xl text-left">
-            {/* Stylish Display Typography for the name "UF" or user defined */}
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-display font-extrabold tracking-tight text-white">
-              {general.name || "UF"}
-            </h1>
+          <div className="space-y-6 flex-grow text-left max-w-3xl">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-mono uppercase tracking-widest font-semibold">
+              <Sparkles className="w-3.5 h-3.5 animate-pulse text-emerald-400" />
+              <span>Interactive Portfolio Core</span>
+            </div>
 
-            <p className="text-lg md:text-xl font-serif text-emerald-400 font-medium italic">
-              {general.title || "Senior Interactive Engineer"}
-            </p>
+            <div className="space-y-3">
+              {/* Stylish Display Typography for the name "UF" or user defined */}
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-extrabold tracking-tight text-white leading-none">
+                {general.name || "UF"}
+              </h1>
+
+              <p className="text-xl md:text-2xl font-serif text-emerald-400 font-medium italic">
+                {general.title || "Senior Interactive Engineer"}
+              </p>
+            </div>
             
-            <p className="text-xs sm:text-sm text-neutral-300 max-w-xl leading-relaxed">
+            <p className="text-sm md:text-base text-neutral-300 max-w-2xl leading-relaxed">
               {general.subtitle || "Crafting fluid multi-dimensional environments with high-fidelity performance."}
             </p>
           </div>
 
-
+          {/* Right Profile Photo - Large, Non-circular, Premium Framing, extremely high quality, doesn't get squished */}
+          <div className="w-full sm:w-80 md:w-96 lg:w-[420px] shrink-0 aspect-[4/5] sm:aspect-[3/4] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950 shadow-2xl relative group z-10">
+            {/* Soft backdrop glow to make the photo pop */}
+            <div className="absolute -inset-1.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-3xl blur-xl opacity-20 group-hover:opacity-35 transition duration-500" />
+            
+            <div className="relative w-full h-full rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+              <img
+                src={general.profileImage || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200"}
+                alt={general.name}
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent opacity-60 pointer-events-none" />
+            </div>
+          </div>
 
         </div>
       </div>

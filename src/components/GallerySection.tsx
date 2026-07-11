@@ -64,7 +64,7 @@ export default function GallerySection({ gallery }: GallerySectionProps) {
   };
 
   return (
-    <section className="py-12 px-4 md:px-8 max-w-7xl mx-auto">
+    <section className="py-12 px-4 md:px-8 max-w-7xl lg:max-w-screen-2xl mx-auto">
       
       {/* Title & Description */}
       <div className="flex flex-col items-center text-center space-y-4 mb-10">
