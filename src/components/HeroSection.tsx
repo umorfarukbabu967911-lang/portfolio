@@ -21,33 +21,32 @@ export default function HeroSection({ general, setActiveTab }: HeroSectionProps)
 
       {/* Profile/Widescreen Banner Top Section: restored and enlarged with text overlay on top of black-gradient background fade */}
       <div className="relative w-full rounded-3xl overflow-hidden bg-neutral-950 border border-neutral-850 mb-12 shadow-2xl min-h-[480px] sm:min-h-[520px] lg:min-h-[580px] flex items-center">
-        {/* Softened gradient overlay for high text readability on the left/bottom while keeping the rest of the image fully visible and clear */}
-        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent lg:bg-gradient-to-r lg:from-neutral-950/90 lg:via-neutral-950/30 lg:to-transparent z-10 pointer-events-none" />
+        {/* Softened vignette overlay keeping the center and right side of the image fully bright and clear */}
+        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/70 via-transparent to-neutral-950/20 z-10 pointer-events-none" />
         
-        {/* Dynamic Cover Image - Spans full width and height as background */}
+        {/* Dynamic Cover Image - Spans full width and height as background with maximum clarity */}
         <div className="absolute inset-0 w-full h-full z-0">
           <img
             src={general.profileImage || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200"}
             alt={general.name}
             referrerPolicy="no-referrer"
-            className="w-full h-full object-cover object-top opacity-85 sm:opacity-95 transition-all duration-700 hover:scale-[1.02]"
+            className="w-full h-full object-cover object-center opacity-100 transition-all duration-700 hover:scale-[1.01]"
           />
         </div>
 
-        {/* Content overlaid inside the widescreen banner image */}
-        <div className="relative z-20 px-6 py-12 md:p-14 lg:p-20 w-full flex flex-col justify-end lg:justify-center items-start text-left gap-6">
-
-          <div className="space-y-4 max-w-3xl">
+        {/* Content overlaid inside the widescreen banner image with glassmorphism for contrast and readability */}
+        <div className="relative z-20 px-6 py-8 md:p-14 lg:p-20 w-full flex flex-col justify-end lg:justify-center items-start text-left">
+          <div className="space-y-4 max-w-xl bg-neutral-950/75 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-neutral-800/60 shadow-2xl">
             {/* Stylish Display Typography for the name "UF" or user defined */}
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-extrabold tracking-tight text-white leading-none">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-extrabold tracking-tight text-white leading-none">
               {general.name || "UF"}
             </h1>
 
-            <p className="text-xl md:text-2xl font-serif text-emerald-400 font-medium italic">
+            <p className="text-lg md:text-xl font-serif text-emerald-400 font-medium italic">
               {general.title || "Senior Interactive Engineer"}
             </p>
             
-            <p className="text-sm md:text-base text-neutral-300 max-w-2xl leading-relaxed pt-2">
+            <p className="text-xs md:text-sm text-neutral-300 leading-relaxed pt-1">
               {general.subtitle || "Crafting fluid multi-dimensional environments with high-fidelity performance."}
             </p>
           </div>
