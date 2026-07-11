@@ -48,6 +48,7 @@ export default function AdminPanel({ data, onUpdateData }: AdminPanelProps) {
     year: "",
     description: "",
   });
+  const [eduImageUrl, setEduImageUrl] = useState("");
 
   // Gallery Form States
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([...data.gallery]);
@@ -57,6 +58,8 @@ export default function AdminPanel({ data, onUpdateData }: AdminPanelProps) {
     category: "ওয়েব ডিজাইন",
   });
   const [galleryImageUrl, setGalleryImageUrl] = useState("");
+  const [isBulkUploading, setIsBulkUploading] = useState(false);
+  const [bulkProgress, setBulkProgress] = useState({ current: 0, total: 0 });
 
   // Messages State
   const [messages, setMessages] = useState([...data.messages]);
@@ -196,6 +199,96 @@ export default function AdminPanel({ data, onUpdateData }: AdminPanelProps) {
     );
   };
 
+  // Bulk File Upload Zone Component
+  const BulkUploaderZone = () => {
+    const [isDragOver, setIsDragOver] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleDragOver = (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDragOver(true);
+    };
+
+    const handleDragLeave = () => {
+      setIsDragOver(false);
+    };
+
+    const handleDrop = (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDragOver(false);
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        handleBulkUploadFiles(e.dataTransfer.files);
+      }
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files && e.target.files.length > 0) {
+        handleBulkUploadFiles(e.target.files);
+      }
+    };
+
+    return (
+      <div className="space-y-2">
+        <label className="block text-xs font-semibold text-neutral-300">
+          ⚡ Bulk Polaroid Upload Zone
+        </label>
+        <div
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onClick={() => {
+            if (!isBulkUploading) fileInputRef.current?.click();
+          }}
+          className={`relative border border-dashed rounded-xl p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 ${
+            isDragOver
+              ? "border-emerald-500 bg-emerald-500/5"
+              : isBulkUploading
+              ? "border-neutral-800 bg-neutral-900/40 cursor-wait"
+              : "border-neutral-800 hover:border-emerald-500/50 bg-neutral-900/10"
+          }`}
+        >
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            accept="image/*"
+            multiple
+            className="hidden"
+            disabled={isBulkUploading}
+          />
+
+          {isBulkUploading ? (
+            <div className="space-y-3 py-2 flex flex-col items-center">
+              <div className="w-8 h-8 border-2 border-emerald-500/20 border-t-emerald-400 rounded-full animate-spin" />
+              <div>
+                <p className="text-xs font-semibold text-emerald-400">
+                  Processing & Compressing Images...
+                </p>
+                <p className="text-[10px] text-neutral-500 font-mono mt-1">
+                  Completed: {bulkProgress.current} / {bulkProgress.total}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-2 py-2">
+              <div className="mx-auto w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+                <Upload className="w-6 h-6" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-neutral-200">
+                  Drag & Drop multiple images or click to select
+                </p>
+                <p className="text-[9px] text-neutral-500 mt-1">
+                  Each image will automatically become a separate Polaroid item and save to the database!
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   // Manage Work Handlers
   const handleAddWork = () => {
     if (!newWork.company || !newWork.role || !newWork.duration) {
@@ -210,13 +303,37 @@ export default function AdminPanel({ data, onUpdateData }: AdminPanelProps) {
       ...newWork,
       tags,
     };
-    setWorks((prev) => [created, ...prev]);
+    const updatedWorks = [created, ...works];
+    setWorks(updatedWorks);
     setNewWork({ company: "", role: "", duration: "", description: "", tags: [] });
     setWorkTagInput("");
+
+    // Auto-save instantly
+    onUpdateData({
+      general: generalForm,
+      work: updatedWorks,
+      education: educations,
+      gallery: galleryItems,
+      messages: messages,
+    });
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 4000);
   };
 
   const handleDeleteWork = (id: string) => {
-    setWorks((prev) => prev.filter((item) => item.id !== id));
+    const updatedWorks = works.filter((item) => item.id !== id);
+    setWorks(updatedWorks);
+
+    // Auto-save instantly
+    onUpdateData({
+      general: generalForm,
+      work: updatedWorks,
+      education: educations,
+      gallery: galleryItems,
+      messages: messages,
+    });
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 4000);
   };
 
   // Manage Education Handlers
@@ -228,13 +345,39 @@ export default function AdminPanel({ data, onUpdateData }: AdminPanelProps) {
     const created: Education = {
       id: "e-" + Date.now(),
       ...newEdu,
+      imageUrl: eduImageUrl || undefined,
     };
-    setEducations((prev) => [created, ...prev]);
+    const updatedEdus = [created, ...educations];
+    setEducations(updatedEdus);
     setNewEdu({ institution: "", degree: "", year: "", description: "" });
+    setEduImageUrl("");
+
+    // Auto-save instantly
+    onUpdateData({
+      general: generalForm,
+      work: works,
+      education: updatedEdus,
+      gallery: galleryItems,
+      messages: messages,
+    });
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 4000);
   };
 
   const handleDeleteEdu = (id: string) => {
-    setEducations((prev) => prev.filter((item) => item.id !== id));
+    const updatedEdus = educations.filter((item) => item.id !== id);
+    setEducations(updatedEdus);
+
+    // Auto-save instantly
+    onUpdateData({
+      general: generalForm,
+      work: works,
+      education: updatedEdus,
+      gallery: galleryItems,
+      messages: messages,
+    });
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 4000);
   };
 
   // Manage Gallery Handlers
@@ -248,18 +391,112 @@ export default function AdminPanel({ data, onUpdateData }: AdminPanelProps) {
       imageUrl: galleryImageUrl,
       ...newGallery,
     };
-    setGalleryItems((prev) => [created, ...prev]);
+    const updatedGallery = [created, ...galleryItems];
+    setGalleryItems(updatedGallery);
     setNewGallery({ title: "", description: "", category: "ওয়েব ডিজাইন" });
     setGalleryImageUrl("");
+
+    // Auto-save instantly
+    onUpdateData({
+      general: generalForm,
+      work: works,
+      education: educations,
+      gallery: updatedGallery,
+      messages: messages,
+    });
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 4000);
   };
 
   const handleDeleteGallery = (id: string) => {
-    setGalleryItems((prev) => prev.filter((item) => item.id !== id));
+    const updatedGallery = galleryItems.filter((item) => item.id !== id);
+    setGalleryItems(updatedGallery);
+
+    // Auto-save instantly
+    onUpdateData({
+      general: generalForm,
+      work: works,
+      education: educations,
+      gallery: updatedGallery,
+      messages: messages,
+    });
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 4000);
+  };
+
+  // Bulk Image Upload Handler
+  const handleBulkUploadFiles = async (files: FileList) => {
+    const validImageFiles = Array.from(files).filter(file => file.type.startsWith("image/"));
+    if (validImageFiles.length === 0) {
+      alert("Please select valid image files.");
+      return;
+    }
+
+    setIsBulkUploading(true);
+    setBulkProgress({ current: 0, total: validImageFiles.length });
+
+    const newItems: GalleryItem[] = [];
+
+    for (let i = 0; i < validImageFiles.length; i++) {
+      const file = validImageFiles[i];
+      try {
+        const compressedBase64 = await compressImageFile(file);
+        
+        // Formulate a clean, readable title from file name
+        let title = file.name;
+        const dotIdx = title.lastIndexOf(".");
+        if (dotIdx !== -1) {
+          title = title.substring(0, dotIdx);
+        }
+        title = title
+          .replace(/[-_]/g, " ")
+          .replace(/\b\w/g, c => c.toUpperCase());
+
+        newItems.push({
+          id: "g-" + (Date.now() + i),
+          imageUrl: compressedBase64,
+          title: title || `Untitled Snapshot`,
+          description: `Snapshot added on ${new Date().toLocaleDateString()}`,
+          category: newGallery.category || "ওয়েব ডিজাইন",
+        });
+      } catch (err) {
+        console.error("Bulk upload item compression failed:", err);
+      }
+      setBulkProgress(prev => ({ ...prev, current: i + 1 }));
+    }
+
+    const updatedGallery = [...newItems, ...galleryItems];
+    setGalleryItems(updatedGallery);
+    setIsBulkUploading(false);
+
+    // Auto sync to cloud immediately
+    onUpdateData({
+      general: generalForm,
+      work: works,
+      education: educations,
+      gallery: updatedGallery,
+      messages: messages,
+    });
+
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 4000);
   };
 
   // Manage Messages Handlers
   const handleDeleteMessage = (id: string) => {
-    setMessages((prev) => prev.filter((item) => item.id !== id));
+    const updatedMsgs = messages.filter((item) => item.id !== id);
+    setMessages(updatedMsgs);
+
+    // Auto sync to cloud immediately
+    onUpdateData({
+      general: generalForm,
+      work: works,
+      education: educations,
+      gallery: galleryItems,
+      messages: updatedMsgs,
+    });
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 4000);
   };
 
   return (
@@ -488,6 +725,16 @@ export default function AdminPanel({ data, onUpdateData }: AdminPanelProps) {
                   />
                 </div>
               </div>
+
+              <div className="flex justify-end pt-4">
+                <button
+                  onClick={handleSaveAll}
+                  className="flex items-center gap-1.5 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition cursor-pointer uppercase tracking-wider"
+                >
+                  <Save className="w-4 h-4" />
+                  Save Profile Settings
+                </button>
+              </div>
             </div>
           )}
 
@@ -605,6 +852,14 @@ export default function AdminPanel({ data, onUpdateData }: AdminPanelProps) {
               
               {/* Add New Education */}
               <div className="bg-neutral-900/10 border border-neutral-900 rounded-2xl p-5 space-y-4">
+                {/* Academic logo/image dropzone */}
+                <DragAndDropUploader
+                  label="Institution Logo / Certificate Image (Optional)"
+                  imageUrl={eduImageUrl}
+                  onUpload={(url) => setEduImageUrl(url)}
+                  onClear={() => setEduImageUrl("")}
+                />
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-[10px] uppercase font-mono tracking-wider font-semibold text-neutral-400 mb-1">Institution Name</label>
@@ -669,14 +924,24 @@ export default function AdminPanel({ data, onUpdateData }: AdminPanelProps) {
                   <div className="space-y-2">
                     {educations.map((item) => (
                       <div key={item.id} className="flex justify-between items-start gap-4 p-4 bg-[#050409] border border-neutral-900 rounded-xl">
-                        <div className="space-y-1 text-left">
-                          <p className="text-sm font-bold text-white">{item.degree}</p>
-                          <p className="text-xs text-emerald-400">{item.institution} | <span className="text-neutral-500 font-mono">{item.year}</span></p>
-                          <p className="text-xs text-neutral-400 mt-1">{item.description}</p>
+                        <div className="flex gap-4 items-start text-left">
+                          {item.imageUrl && (
+                            <img
+                              src={item.imageUrl}
+                              alt={item.institution}
+                              referrerPolicy="no-referrer"
+                              className="w-12 h-12 rounded-lg object-contain bg-neutral-900 border border-neutral-800 shrink-0"
+                            />
+                          )}
+                          <div className="space-y-1 text-left">
+                            <p className="text-sm font-bold text-white">{item.degree}</p>
+                            <p className="text-xs text-emerald-400">{item.institution} | <span className="text-neutral-500 font-mono">{item.year}</span></p>
+                            <p className="text-xs text-neutral-400 mt-1">{item.description}</p>
+                          </div>
                         </div>
                         <button
                           onClick={() => handleDeleteEdu(item.id)}
-                          className="p-2 bg-rose-600/10 hover:bg-rose-600 border border-rose-500/20 text-rose-400 hover:text-white rounded-lg transition"
+                          className="p-2 bg-rose-600/10 hover:bg-rose-600 border border-rose-500/20 text-rose-400 hover:text-white rounded-lg transition shrink-0"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -748,6 +1013,11 @@ export default function AdminPanel({ data, onUpdateData }: AdminPanelProps) {
                     Append to Scrapbook
                   </button>
                 </div>
+              </div>
+
+              {/* Bulk Polaroid Upload Zone */}
+              <div className="bg-[#0b0813] border border-neutral-900 rounded-2xl p-5 space-y-4">
+                <BulkUploaderZone />
               </div>
 
               {/* Display existing Gallery Items */}

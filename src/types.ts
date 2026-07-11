@@ -29,6 +29,7 @@ export interface Education {
   degree: string;
   year: string;
   description: string;
+  imageUrl?: string;
 }
 
 export interface GalleryItem {

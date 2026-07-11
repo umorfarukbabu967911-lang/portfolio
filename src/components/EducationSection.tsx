@@ -57,7 +57,7 @@ export default function EducationSection({ education }: EducationSectionProps) {
                       gradientPreset={isEven ? "aurora" : "cyberpunk"}
                       className="p-0!"
                     >
-                      <div className="space-y-3 text-left">
+                      <div className="space-y-4 text-left">
                         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-900 pb-2">
                           <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-xs font-mono font-bold">
                             <Calendar className="w-3.5 h-3.5 text-emerald-500" />
@@ -65,17 +65,31 @@ export default function EducationSection({ education }: EducationSectionProps) {
                           </span>
                         </div>
 
-                        <h3 className="text-base sm:text-lg font-bold text-white leading-tight">
-                          {item.degree}
-                        </h3>
+                        <div className="flex flex-col sm:flex-row gap-4 items-start">
+                          {item.imageUrl && (
+                            <div className="w-16 h-16 rounded-xl overflow-hidden bg-neutral-900 border border-neutral-800 shrink-0">
+                              <img
+                                src={item.imageUrl}
+                                alt={item.institution}
+                                referrerPolicy="no-referrer"
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          )}
+                          <div className="space-y-1.5 flex-grow">
+                            <h3 className="text-base sm:text-lg font-bold text-white leading-tight">
+                              {item.degree}
+                            </h3>
 
-                        <h4 className="text-xs sm:text-sm text-emerald-400 font-mono font-medium">
-                          {item.institution}
-                        </h4>
+                            <h4 className="text-xs sm:text-sm text-emerald-400 font-mono font-medium">
+                              {item.institution}
+                            </h4>
 
-                        <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
-                          {item.description}
-                        </p>
+                            <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed pt-1">
+                              {item.description}
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </RotatingBorderCard>
                   </ThreeDCard>

@@ -37,11 +37,6 @@ export default function HeroSection({ general, setActiveTab }: HeroSectionProps)
         <div className="relative z-20 px-6 py-12 md:p-16 flex flex-col md:flex-row md:items-center justify-between gap-8">
           
           <div className="space-y-4 max-w-2xl text-left">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-mono tracking-widest uppercase">
-              <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-              <span>CREATIVE ARCHITECT</span>
-            </div>
-
             {/* Stylish Display Typography for the name "UF" or user defined */}
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-display font-extrabold tracking-tight text-white">
               {general.name || "UF"}
@@ -56,24 +51,7 @@ export default function HeroSection({ general, setActiveTab }: HeroSectionProps)
             </p>
           </div>
 
-          {/* Quick interactive parameters sidebar inside the banner */}
-          <div className="bg-neutral-950/85 backdrop-blur-md border border-neutral-800/80 p-5.5 rounded-2xl md:w-80 space-y-3 font-mono text-xs text-neutral-400">
-            <div className="flex justify-between border-b border-neutral-900 pb-2">
-              <span className="text-neutral-500 font-semibold uppercase tracking-wider text-[10px]">STATUS</span>
-              <span className="text-emerald-400 font-bold flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                AVAILABLE FOR HIRE
-              </span>
-            </div>
-            <div className="flex justify-between border-b border-neutral-900 pb-2">
-              <span className="text-neutral-500 font-semibold uppercase tracking-wider text-[10px]">EXPERIENCE</span>
-              <span className="text-neutral-200 font-bold">5+ YEARS ACTIVE</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-neutral-500 font-semibold uppercase tracking-wider text-[10px]">LOCATION</span>
-              <span className="text-neutral-200 font-bold truncate">NY, USA</span>
-            </div>
-          </div>
+
 
         </div>
       </div>

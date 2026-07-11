@@ -84,6 +84,14 @@ export async function compressPortfolioDataImages(data: PortfolioData): Promise<
     }
   }
 
+  if (clone.education && Array.isArray(clone.education)) {
+    for (let i = 0; i < clone.education.length; i++) {
+      if (clone.education[i].imageUrl) {
+        clone.education[i].imageUrl = await compressBase64Image(clone.education[i].imageUrl);
+      }
+    }
+  }
+
   return clone;
 }
 
