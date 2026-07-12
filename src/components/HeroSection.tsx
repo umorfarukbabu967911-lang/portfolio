@@ -19,8 +19,12 @@ export default function HeroSection({ general, setActiveTab }: HeroSectionProps)
       {/* Grid pattern backdrop */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none" />
 
-      {/* Pure High-Resolution Widescreen Banner (Fully uncovered, maximum clarity, no overlays) */}
-      <div className="relative w-full rounded-3xl overflow-hidden bg-neutral-950 border border-neutral-800 mb-8 shadow-2xl h-[450px] sm:h-[550px] md:h-[650px] lg:h-[750px] flex items-center">
+      {/* Profile/Widescreen Banner Top Section: Re-enlarged with high resolution, and text overlay on top of clear, unblocked image */}
+      <div className="relative w-full rounded-3xl overflow-hidden bg-neutral-950 border border-neutral-800 mb-12 shadow-2xl h-[500px] sm:h-[600px] md:h-[700px] lg:h-[800px] flex items-end">
+        {/* Extreme minimal subtle shadow gradient at bottom to keep overall image bright, crisp, and fully visible */}
+        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/50 via-transparent to-transparent z-10 pointer-events-none" />
+        
+        {/* Dynamic Cover Image - Spans full width and height with maximum resolution and clarity parameters */}
         <div className="absolute inset-0 w-full h-full z-0">
           <img
             src={general.profileImage ? general.profileImage.replace(/w=\d+/, "w=2400").replace(/q=\d+/, "q=100") : "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=100&w=2400"}
@@ -29,19 +33,24 @@ export default function HeroSection({ general, setActiveTab }: HeroSectionProps)
             className="w-full h-full object-cover object-center opacity-100 transition-all duration-700 hover:scale-[1.01]"
           />
         </div>
-      </div>
 
-      {/* Brand Identity Header (Name, Title, Subtitle placed cleanly below the banner for zero image blockage) */}
-      <div className="space-y-4 max-w-4xl text-left mb-12 bg-neutral-950/40 border border-neutral-900/60 p-6 sm:p-8 rounded-3xl backdrop-blur-sm">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-extrabold tracking-tight text-white leading-none">
-          {general.name || "UF"}
-        </h1>
-        <p className="text-lg md:text-xl font-serif text-emerald-400 font-medium italic">
-          {general.title || "Senior Interactive Engineer"}
-        </p>
-        <p className="text-sm md:text-base text-neutral-300 leading-relaxed pt-1">
-          {general.subtitle || "Crafting fluid multi-dimensional environments with high-fidelity performance."}
-        </p>
+        {/* Content overlaid on top of the banner image with ultra-thin glassmorphism and clear contrast */}
+        <div className="relative z-20 px-6 py-8 md:p-14 lg:p-20 w-full flex flex-col justify-end items-start text-left">
+          <div className="space-y-4 max-w-xl bg-neutral-950/75 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-neutral-800/60 shadow-2xl">
+            {/* Stylish Display Typography for the name "UF" or user defined */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-extrabold tracking-tight text-white leading-none">
+              {general.name || "UF"}
+            </h1>
+
+            <p className="text-lg md:text-xl font-serif text-emerald-400 font-medium italic">
+              {general.title || "Senior Interactive Engineer"}
+            </p>
+            
+            <p className="text-xs md:text-sm text-neutral-300 leading-relaxed pt-1">
+              {general.subtitle || "Crafting fluid multi-dimensional environments with high-fidelity performance."}
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Lower Details Section: Bio, contact specifics, and call to actions */}
